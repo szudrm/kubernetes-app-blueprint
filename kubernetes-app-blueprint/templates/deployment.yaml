@@ -38,13 +38,19 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
+            periodSeconds: 5
             httpGet:
               path: /
               port: http
           readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 1
             httpGet:
               path: /
               port: http
+          env:
+            - name: APP_PORT
+              value: "{{ .Values.service.port }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

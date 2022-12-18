@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: kubernetes-app-blueprint
   pullPolicy: IfNotPresent
-  tag: "latest"  # This will need to be a proper version number
+  # tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -53,16 +53,16 @@ ingress:
 
 resources:
   limits:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 1000m
+    memory: 256Mi
   requests:
-    cpu: 100m
+    cpu: 500m
     memory: 128Mi
 
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 

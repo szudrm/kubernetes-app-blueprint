@@ -1,3 +1,5 @@
+APP_NAME := kubernetes-app-blueprint
+APP_VERSION := $(shell grep '^appVersion' $(APP_NAME)/Chart.yaml | awk '{print $$2}' | tr -d '"' )
 .PHONY: help build cluster-create cluster-destroy helm-deploy helm-undeploy call
 
 help:
@@ -11,7 +13,7 @@ help:
 
 build:
 	@echo "Building Docker image..."
-	minikube image build -t kubernetes-app-blueprint:latest .
+	minikube image build -t $(APP_NAME):$(APP_VERSION) .
 
 cluster-create:
 	@echo "Starting Minikube cluster..."
@@ -23,12 +25,12 @@ cluster-destroy:
 
 helm-deploy:
 	@echo "Deploying or upgrading Helm release..."
-	helm upgrade --install kubernetes-app-blueprint ./kubernetes-app-blueprint
+	helm upgrade --install $(APP_NAME) "./$(APP_NAME)"
 
 helm-undeploy:
 	@echo "Uninstalling Helm release..."
-	-helm uninstall kubernetes-app-blueprint
+	-helm uninstall $(APP_NAME)
 
 call:
-	@kubectl rollout status deployment/kubernetes-app-blueprint --timeout=60s
-	@curl http://$$(minikube ip):$$(kubectl get svc kubernetes-app-blueprint -o jsonpath='{.spec.ports[0].nodePort}')
+	@kubectl rollout status deployment/$(APP_NAME) --timeout=60s
+	@curl http://$$(minikube ip):$$(kubectl get svc $(APP_NAME) -o jsonpath='{.spec.ports[0].nodePort}')
