@@ -20,11 +20,13 @@ helm-deploy
 ```
 
 ### Call the Application
+
 ```bash
 make call
 ```
 
 ### Destroy All Resources
+
 ```bash
 make helm-undeploy
 make cluster-destroy
@@ -40,12 +42,14 @@ This project uses [pre-commit](https://pre-commit.com) to enforce code quality, 
 - Spell-checking and repository hygiene (large files, symlinks, merge conflicts)
 
 ### Install Hooks
+
 ```bash
 pip install pre-commit
 pre-commit install
 ```
 
 ### Run Hooks Manually
+
 ```bash
 pre-commit run --all-files
 ```

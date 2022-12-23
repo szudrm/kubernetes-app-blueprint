@@ -1,5 +1,6 @@
 APP_NAME := kubernetes-app-blueprint
 APP_VERSION := $(shell grep '^appVersion' $(APP_NAME)/Chart.yaml | awk '{print $$2}' | tr -d '"' )
+
 .PHONY: help build cluster-create cluster-destroy helm-deploy helm-undeploy call
 
 help:
@@ -13,6 +14,7 @@ help:
 
 build:
 	@echo "Building Docker image..."
+	export DOCKER_BUILDKIT=1
 	minikube image build -t $(APP_NAME):$(APP_VERSION) .
 
 cluster-create:
