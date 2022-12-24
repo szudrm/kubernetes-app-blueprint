@@ -41,17 +41,19 @@ spec:
           livenessProbe:
             periodSeconds: 5
             httpGet:
-              path: /
+              path: /health/live
               port: http
           readinessProbe:
             initialDelaySeconds: 10
             periodSeconds: 1
             httpGet:
-              path: /
+              path: /health/ready
               port: http
           env:
             - name: APP_PORT
               value: "{{ .Values.service.port }}"
+            - name: GIT_COMMIT
+              value: {{ .Values.gitCommit }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

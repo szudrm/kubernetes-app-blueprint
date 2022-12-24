@@ -1,7 +1,11 @@
 ---
 extends: default
 rules:
-  empty-lines: disable
   line-length:
     max: 180
     level: warning
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+  indentation:
+    ignore: kubernetes-app-blueprint/templates/*.yaml

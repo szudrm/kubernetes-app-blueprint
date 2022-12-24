@@ -15,7 +15,7 @@ help:
 build:
 	@echo "Building Docker image..."
 	export DOCKER_BUILDKIT=1
-	minikube image build -t $(APP_NAME):$(APP_VERSION) .
+	minikube image build --tag $(APP_NAME):$(APP_VERSION) .
 
 cluster-create:
 	@echo "Starting Minikube cluster..."
@@ -27,7 +27,10 @@ cluster-destroy:
 
 helm-deploy:
 	@echo "Deploying or upgrading Helm release..."
-	helm upgrade --install $(APP_NAME) "./$(APP_NAME)"
+	helm upgrade --install $(APP_NAME) "./$(APP_NAME)" \
+		--values $(APP_NAME)/values/common.yaml \
+		--values $(APP_NAME)/values/env/local.yaml \
+		--set gitCommit="$$(git rev-parse HEAD)"
 
 helm-undeploy:
 	@echo "Uninstalling Helm release..."
@@ -35,4 +38,7 @@ helm-undeploy:
 
 call:
 	@kubectl rollout status deployment/$(APP_NAME) --timeout=60s
-	@curl http://$$(minikube ip):$$(kubectl get svc $(APP_NAME) -o jsonpath='{.spec.ports[0].nodePort}')
+	@curl $$(minikube service $(APP_NAME) --url)
+
+dashboard:
+	@minikube dashboard

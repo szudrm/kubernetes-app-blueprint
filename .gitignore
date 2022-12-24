@@ -398,3 +398,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Allow Helm environment values (these are config files, not Python virtualenvs)
+!kubernetes-app-blueprint/values/env/
+!kubernetes-app-blueprint/values/env/**

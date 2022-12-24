@@ -20,11 +20,12 @@ RUN pip install --upgrade pip && \
     pip install --user --no-cache-dir --no-compile -r requirements.txt && \
     rm -f requirements.txt
 
+
 FROM base
 
 COPY --from=build --chown=root:root --chmod=755 /app /app/
 
-ENV APP_PORT=8080
-EXPOSE 8080
+ARG APP_PORT=8080
+ENV APP_PORT=$APP_PORT
 
 CMD ["python", "main.py"]
