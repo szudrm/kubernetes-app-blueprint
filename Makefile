@@ -21,7 +21,7 @@ build:
 
 cluster-create:
 	@echo "Starting Minikube cluster..."
-	minikube start --wait=true
+	minikube start --driver=docker --wait=true
 	minikube addons enable ingress
 
 	# Create a TLS private key secret for the ingress if it doesn't already exist

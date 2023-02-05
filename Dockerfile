@@ -14,18 +14,22 @@ WORKDIR /app
 
 FROM base AS build
 
+ENV PIP_NO_CACHE_DIR=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
 COPY --chown=appuser:appuser app/* ./
 ENV PATH=/app/.local/bin:$PATH
 RUN pip install --upgrade pip && \
-    pip install --user --no-cache-dir --no-compile -r requirements.txt && \
+    pip install --user -r requirements.txt && \
     rm -f requirements.txt
 
 
 FROM base
 
-COPY --from=build --chown=root:root --chmod=755 /app /app/
-
 ARG APP_PORT=8080
 ENV APP_PORT=$APP_PORT
+ENV PYTHONUNBUFFERED=1
+
+COPY --from=build --chown=root:root --chmod=755 /app /app/
 
 CMD ["python", "main.py"]
